@@ -1,0 +1,37 @@
+# config.yaml
+sources:
+  hatena:
+    enabled: true
+    popular_count: 25
+    new_count: 15
+
+  hackernews:
+    enabled: true
+    story_count: 30
+
+  reddit:
+    enabled: true
+    use_personal_feed: true  # Fetch from user's subscribed subreddits
+    post_count: 30
+
+ai:
+  provider: anthropic
+  model: claude-haiku-4-20250110  # Cost-optimized model
+  max_tokens: 4000
+  temperature: 0.3
+  summary_language: japanese
+  auto_categorize: true  # AI determines topic categories
+
+output:
+  reading_time_minutes: 10
+  max_word_count: 2000
+  include_comments: false  # Do not include user comments
+  visual_design: true  # Use colorful, icon-rich design
+
+schedule:
+  timezone: America/Los_Angeles  # PST/PDT
+  time: "07:00"
+
+archive:
+  keep_days: 90
+  generate_index: true
