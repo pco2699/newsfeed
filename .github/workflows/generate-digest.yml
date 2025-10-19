@@ -60,7 +60,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add index.html archive/ archive.html digest_generation.log
+          git add index.html archive/ archive.html
           git commit -m "🤖 Auto-generate daily digest - $(date +'%Y-%m-%d')" || exit 0
           git push
 
