@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>デイリーダイジェスト - 2025-10-19</title>
+        <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --border-color: #dee2e6;
+            --accent-blue: #0d6efd;
+            --accent-green: #198754;
+            --accent-orange: #fd7e14;
+            --accent-purple: #6f42c1;
+            --accent-red: #dc3545;
+            --shadow: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #2d2d2d;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --border-color: #495057;
+            --shadow: 0 2px 8px rgba(0,0,0,0.3);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .colorful-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .colorful-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .colorful-header .date {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            opacity: 0.95;
+        }
+
+        .colorful-header .meta {
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+
+        .dark-mode-toggle {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .icon-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 152px;
+            z-index: 99;
+        }
+
+        .icon-nav a {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 20px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .icon-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent-blue);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            border-left: 5px solid var(--accent-blue);
+            padding-left: 1rem;
+        }
+
+        .category-section.highlight h2 {
+            border-left-color: var(--accent-red);
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-blue);
+        }
+
+        .article-card.highlight-card {
+            border-color: var(--accent-orange);
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+        }
+
+        .source-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: white;
+            width: fit-content;
+        }
+
+        .source-badge.hatena {
+            background: linear-gradient(135deg, #00a4de 0%, #0086c3 100%);
+        }
+
+        .source-badge.hackernews {
+            background: linear-gradient(135deg, #ff6600 0%, #ff4500 100%);
+        }
+
+        .source-badge.reddit {
+            background: linear-gradient(135deg, #ff4500 0%, #ff3300 100%);
+        }
+
+        .source-badge.other {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .article-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .article-card h3 a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .article-card h3 a:hover {
+            color: var(--accent-blue);
+        }
+
+        .summary {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .score {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .read-more {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .read-more:hover {
+            color: var(--accent-purple);
+            transform: translateX(3px);
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .disclaimer {
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .colorful-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .article-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .icon-nav {
+                gap: 0.3rem;
+                top: 136px;
+            }
+
+            .icon-nav a {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="colorful-header">
+        <h1>📰 デイリーダイジェスト</h1>
+        <p class="date">2025年10月19日（日）</p>
+        <p class="meta">生成時刻: 2025-10-19 00:52 PST | 読書時間: 約15分</p>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓 ダークモード</button>
+    </header>
+
+    <nav class="icon-nav">
+        <a href="#highlights">🔥 ハイライト</a>
+        <a href="#category-0">🤖 Reddit</a>
+        <a href="#category-1">📑 はてブ</a>
+        <a href="#category-2">🔶 Hacker News</a>
+        <a href="archive.html">📚 アーカイブ</a>
+    </nav>
+
+    <main>
+        <section id="highlights" class="category-section highlight">
+            <h2>🔥 今日のハイライト</h2>
+            <div class="article-grid">
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/zdifal5f4uvf1.jpeg" target="_blank" rel="noopener noreferrer">I CANNOT believe this worked</a></h3>
+                    <p class="summary">I CANNOT believe this worked</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17314 upvotes</span>
+                        <a href="https://i.redd.it/zdifal5f4uvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/fwa1u9lp9vvf1.jpeg" target="_blank" rel="noopener noreferrer">Was watching smiling friends and noticed Glep playing on a steamdeck. What do you think lil dude is playing?</a></h3>
+                    <p class="summary">Was watching smiling friends and noticed Glep playing on a steamdeck. What do you think lil dude is playing?</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 3022 upvotes</span>
+                        <a href="https://i.redd.it/fwa1u9lp9vvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1oa87dd" target="_blank" rel="noopener noreferrer">Mountain View showing up for America</a></h3>
+                    <p class="summary">Mountain View showing up for America</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 1383 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1oa87dd" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/recruitinghell/comments/1oa12z1/got_a_job_they_were_nice_during_the_interview/" target="_blank" rel="noopener noreferrer">Got a job. They were nice during the interview, seemed like great people. Then on my first day…</a></h3>
+                    <p class="summary">Got a job. They were nice during the interview, seemed like great people. Then on my first day…</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 690 upvotes</span>
+                        <a href="https://reddit.com/r/recruitinghell/comments/1oa12z1/got_a_job_they_were_nice_during_the_interview/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/bwewclw6ysvf1.jpeg" target="_blank" rel="noopener noreferrer">Got my first mini ereader!</a></h3>
+                    <p class="summary">Got my first mini ereader!</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 531 upvotes</span>
+                        <a href="https://i.redd.it/bwewclw6ysvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://v.redd.it/38ak56bjswvf1" target="_blank" rel="noopener noreferrer">[botW] always , anything for her</a></h3>
+                    <p class="summary">[botW] always , anything for her</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 513 upvotes</span>
+                        <a href="https://v.redd.it/38ak56bjswvf1" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://posfie.com/@taimport/p/4e2Zcvu" target="_blank" rel="noopener noreferrer">45歳超えたら分かると思うが、圧倒的に「社会的地位＞資産」だよ。不動産や株で小金を持っても大して幸福感につながらず、数億超えたらお金の限界効用も相当逓減する→みなさんはどうですか？</a></h3>
+                    <p class="summary">麻布次郎 @shojikimono800 45歳超えたら分かると思うが、圧倒的に 社会的地位＞資産 だよ。不動産や株で小金を持っても大して幸福感につながらず、数億超えたらお金の限界効用も相当逓減する。人に必要とされたり尊敬されていることの方が幸福感に直結する。家族や別のコミュニティの繋がりでもいい。麻生さんを見ればわ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 457 users</span>
+                        <a href="https://posfie.com/@taimport/p/4e2Zcvu" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1o9x3rm" target="_blank" rel="noopener noreferrer">I converted a broken Chromebook into a mini PC</a></h3>
+                    <p class="summary">I converted a broken Chromebook into a mini PC</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 401 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1o9x3rm" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/assassinscreed/comments/1o9sxi1/i_originally_expected_the_assassins_creed_games/" target="_blank" rel="noopener noreferrer">I originally expected the Assassin’s Creed games to eventually reach the present day</a></h3>
+                    <p class="summary">I originally expected the Assassin’s Creed games to eventually reach the present day</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 368 upvotes</span>
+                        <a href="https://reddit.com/r/assassinscreed/comments/1o9sxi1/i_originally_expected_the_assassins_creed_games/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card highlight-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://github.com/BurntSushi/ripgrep/releases/tag/15.0.0" target="_blank" rel="noopener noreferrer">Ripgrep 15.0</a></h3>
+                    <p class="summary">Ripgrep 15.0</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 348 points</span>
+                        <a href="https://github.com/BurntSushi/ripgrep/releases/tag/15.0.0" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        
+        <section id="category-0" class="category-section">
+            <h2>🤖 Reddit</h2>
+            <div class="article-grid">
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/zdifal5f4uvf1.jpeg" target="_blank" rel="noopener noreferrer">I CANNOT believe this worked</a></h3>
+                    <p class="summary">I CANNOT believe this worked</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17314 upvotes</span>
+                        <a href="https://i.redd.it/zdifal5f4uvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/fwa1u9lp9vvf1.jpeg" target="_blank" rel="noopener noreferrer">Was watching smiling friends and noticed Glep playing on a steamdeck. What do you think lil dude is playing?</a></h3>
+                    <p class="summary">Was watching smiling friends and noticed Glep playing on a steamdeck. What do you think lil dude is playing?</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 3022 upvotes</span>
+                        <a href="https://i.redd.it/fwa1u9lp9vvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1oa87dd" target="_blank" rel="noopener noreferrer">Mountain View showing up for America</a></h3>
+                    <p class="summary">Mountain View showing up for America</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 1383 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1oa87dd" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/recruitinghell/comments/1oa12z1/got_a_job_they_were_nice_during_the_interview/" target="_blank" rel="noopener noreferrer">Got a job. They were nice during the interview, seemed like great people. Then on my first day…</a></h3>
+                    <p class="summary">Got a job. They were nice during the interview, seemed like great people. Then on my first day…</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 690 upvotes</span>
+                        <a href="https://reddit.com/r/recruitinghell/comments/1oa12z1/got_a_job_they_were_nice_during_the_interview/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/bwewclw6ysvf1.jpeg" target="_blank" rel="noopener noreferrer">Got my first mini ereader!</a></h3>
+                    <p class="summary">Got my first mini ereader!</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 531 upvotes</span>
+                        <a href="https://i.redd.it/bwewclw6ysvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://v.redd.it/38ak56bjswvf1" target="_blank" rel="noopener noreferrer">[botW] always , anything for her</a></h3>
+                    <p class="summary">[botW] always , anything for her</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 513 upvotes</span>
+                        <a href="https://v.redd.it/38ak56bjswvf1" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1o9x3rm" target="_blank" rel="noopener noreferrer">I converted a broken Chromebook into a mini PC</a></h3>
+                    <p class="summary">I converted a broken Chromebook into a mini PC</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 401 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1o9x3rm" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/assassinscreed/comments/1o9sxi1/i_originally_expected_the_assassins_creed_games/" target="_blank" rel="noopener noreferrer">I originally expected the Assassin’s Creed games to eventually reach the present day</a></h3>
+                    <p class="summary">I originally expected the Assassin’s Creed games to eventually reach the present day</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 368 upvotes</span>
+                        <a href="https://reddit.com/r/assassinscreed/comments/1o9sxi1/i_originally_expected_the_assassins_creed_games/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/cscareerquestions/comments/1oa5nx7/ai_slop_code_ai_is_hiding_incompetence_that_used/" target="_blank" rel="noopener noreferrer">AI Slop Code: AI is hiding incompetence that used to be obvious</a></h3>
+                    <p class="summary">AI Slop Code: AI is hiding incompetence that used to be obvious</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 312 upvotes</span>
+                        <a href="https://reddit.com/r/cscareerquestions/comments/1oa5nx7/ai_slop_code_ai_is_hiding_incompetence_that_used/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/qfrvwq9g9wvf1.jpeg" target="_blank" rel="noopener noreferrer">Do LC daily. No leave allowed. :)</a></h3>
+                    <p class="summary">Do LC daily. No leave allowed. :)</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 302 upvotes</span>
+                        <a href="https://i.redd.it/qfrvwq9g9wvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/hgk1sq0b5xvf1.jpeg" target="_blank" rel="noopener noreferrer">chads use nix</a></h3>
+                    <p class="summary">chads use nix</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 300 upvotes</span>
+                        <a href="https://i.redd.it/hgk1sq0b5xvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1oa7t4l" target="_blank" rel="noopener noreferrer">RDDT stock, I keep buying on dips but dip keeps dipping. Target price $300 next year they say</a></h3>
+                    <p class="summary">RDDT stock, I keep buying on dips but dip keeps dipping. Target price $300 next year they say</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 276 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1oa7t4l" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://www.reddit.com/gallery/1oa80h6" target="_blank" rel="noopener noreferrer">Finally got the DS2 Platinum trophy!</a></h3>
+                    <p class="summary">Finally got the DS2 Platinum trophy!</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 143 upvotes</span>
+                        <a href="https://www.reddit.com/gallery/1oa80h6" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/5ssmyhb3cyvf1.png" target="_blank" rel="noopener noreferrer">I don&#x27;t understand the beef alot of yall have with gamehub lite</a></h3>
+                    <p class="summary">I don&#x27;t understand the beef alot of yall have with gamehub lite</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 133 upvotes</span>
+                        <a href="https://i.redd.it/5ssmyhb3cyvf1.png" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/uzk0rjzpvvvf1.jpeg" target="_blank" rel="noopener noreferrer">Approved!! God is great !! 💚</a></h3>
+                    <p class="summary">Approved!! God is great !! 💚</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 119 upvotes</span>
+                        <a href="https://i.redd.it/uzk0rjzpvvvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/japanlife/comments/1o9x1b0/rip_newdays_ham_cheese_croissants/" target="_blank" rel="noopener noreferrer">RIP NEWDAYS Ham &amp; Cheese Croissants</a></h3>
+                    <p class="summary">RIP NEWDAYS Ham &amp; Cheese Croissants</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 102 upvotes</span>
+                        <a href="https://reddit.com/r/japanlife/comments/1o9x1b0/rip_newdays_ham_cheese_croissants/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/Layoffs/comments/1oa49v2/2_months_ago_it_was_supposed_to_be_hundreds_of/" target="_blank" rel="noopener noreferrer">2 months ago it was supposed to be &quot;hundreds&quot; of layoffs. Paramount will be cutting 2,000 at the end of October.</a></h3>
+                    <p class="summary">2 months ago it was supposed to be &quot;hundreds&quot; of layoffs. Paramount will be cutting 2,000 at the end of October.</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 95 upvotes</span>
+                        <a href="https://reddit.com/r/Layoffs/comments/1oa49v2/2_months_ago_it_was_supposed_to_be_hundreds_of/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://youtu.be/8T_MrJV-B0U" target="_blank" rel="noopener noreferrer">I&#x27;m in love with zig! Writing a realtime, cpu only voxel raytracer.</a></h3>
+                    <p class="summary">I&#x27;m in love with zig! Writing a realtime, cpu only voxel raytracer.</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 76 upvotes</span>
+                        <a href="https://youtu.be/8T_MrJV-B0U" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://v.redd.it/ft7dx50dkuvf1" target="_blank" rel="noopener noreferrer">MercuryEngine (Apple Native Game Engine Update #01)</a></h3>
+                    <p class="summary">MercuryEngine (Apple Native Game Engine Update #01)</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 67 upvotes</span>
+                        <a href="https://v.redd.it/ft7dx50dkuvf1" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/02jv76x7huvf1.jpeg" target="_blank" rel="noopener noreferrer">Problem installing termux from both GitHub versions and F-droid</a></h3>
+                    <p class="summary">Problem installing termux from both GitHub versions and F-droid</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 53 upvotes</span>
+                        <a href="https://i.redd.it/02jv76x7huvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/8hz5ye5ffyvf1.jpeg" target="_blank" rel="noopener noreferrer">Oops, well that escalated quickly.</a></h3>
+                    <p class="summary">Oops, well that escalated quickly.</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 39 upvotes</span>
+                        <a href="https://i.redd.it/8hz5ye5ffyvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/SanMateo/comments/1oa8x19/i_hope_to_hear_of_a_great_turnout_today/" target="_blank" rel="noopener noreferrer">I hope to hear of a great turnout today!</a></h3>
+                    <p class="summary">I hope to hear of a great turnout today!</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 31 upvotes</span>
+                        <a href="https://reddit.com/r/SanMateo/comments/1oa8x19/i_hope_to_hear_of_a_great_turnout_today/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/71k5vt3mkwvf1.png" target="_blank" rel="noopener noreferrer">Shelter App</a></h3>
+                    <p class="summary">Shelter App</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 23 upvotes</span>
+                        <a href="https://i.redd.it/71k5vt3mkwvf1.png" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/ExperiencedDevs/comments/1oabnxs/i_am_making_a_prediction_ai_will_cause_a_big/" target="_blank" rel="noopener noreferrer">I am making a prediction, AI will cause a big collapse like the GFC</a></h3>
+                    <p class="summary">I am making a prediction, AI will cause a big collapse like the GFC</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 20 upvotes</span>
+                        <a href="https://reddit.com/r/ExperiencedDevs/comments/1oabnxs/i_am_making_a_prediction_ai_will_cause_a_big/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/xtqa5cnxqwvf1.jpeg" target="_blank" rel="noopener noreferrer">Beast will ship in October</a></h3>
+                    <p class="summary">Beast will ship in October</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17 upvotes</span>
+                        <a href="https://i.redd.it/xtqa5cnxqwvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/SavingMoney/comments/1oa97ca/best_way_to_save_money_is_to_put_it_somewhere_and/" target="_blank" rel="noopener noreferrer">best way to save money is to put it somewhere and forget it</a></h3>
+                    <p class="summary">best way to save money is to put it somewhere and forget it</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 16 upvotes</span>
+                        <a href="https://reddit.com/r/SavingMoney/comments/1oa97ca/best_way_to_save_money_is_to_put_it_somewhere_and/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/neovim/comments/1oa6qfo/how_do_you_make_terminal_ergonomic/" target="_blank" rel="noopener noreferrer">How do you make :terminal ergonomic</a></h3>
+                    <p class="summary">How do you make :terminal ergonomic</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 16 upvotes</span>
+                        <a href="https://reddit.com/r/neovim/comments/1oa6qfo/how_do_you_make_terminal_ergonomic/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/immigration/comments/1oa67cs/is_this_normal/" target="_blank" rel="noopener noreferrer">is this normal?</a></h3>
+                    <p class="summary">is this normal?</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 4 upvotes</span>
+                        <a href="https://reddit.com/r/immigration/comments/1oa67cs/is_this_normal/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://i.redd.it/na86tyaxwxvf1.jpeg" target="_blank" rel="noopener noreferrer">Custom lenses</a></h3>
+                    <p class="summary">Custom lenses</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 3 upvotes</span>
+                        <a href="https://i.redd.it/na86tyaxwxvf1.jpeg" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge reddit">Reddit</span>
+                    <h3><a href="https://reddit.com/r/EB2_NIW/comments/1oa7ffi/i485_sent_two_passport_photo_for_derivative/" target="_blank" rel="noopener noreferrer">I-485 Sent Two Passport Photo for Derivative Instead of 6</a></h3>
+                    <p class="summary">I-485 Sent Two Passport Photo for Derivative Instead of 6</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 3 upvotes</span>
+                        <a href="https://reddit.com/r/EB2_NIW/comments/1oa7ffi/i485_sent_two_passport_photo_for_derivative/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="category-1" class="category-section">
+            <h2>📑 はてブ</h2>
+            <div class="article-grid">
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://posfie.com/@taimport/p/4e2Zcvu" target="_blank" rel="noopener noreferrer">45歳超えたら分かると思うが、圧倒的に「社会的地位＞資産」だよ。不動産や株で小金を持っても大して幸福感につながらず、数億超えたらお金の限界効用も相当逓減する→みなさんはどうですか？</a></h3>
+                    <p class="summary">麻布次郎 @shojikimono800 45歳超えたら分かると思うが、圧倒的に 社会的地位＞資産 だよ。不動産や株で小金を持っても大して幸福感につながらず、数億超えたらお金の限界効用も相当逓減する。人に必要とされたり尊敬されていることの方が幸福感に直結する。家族や別のコミュニティの繋がりでもいい。麻生さんを見ればわ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 457 users</span>
+                        <a href="https://posfie.com/@taimport/p/4e2Zcvu" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://anond.hatelabo.jp/20251018225012" target="_blank" rel="noopener noreferrer">スタバに行けない人間は下等生物だから死ぬべきなんだってさ</a></h3>
+                    <p class="summary">好きだった人から罵倒されてマジで鬱 大学のゼミで仲良くなった女の子がいて勇気を出してデートに誘ったのね 「一緒にチェンソーマン観に行かない？」って 女の子からOK貰えたから今日ウキウキで出かけたわけさ 女の子は言うわけ 「映画始まるまで時間あるからスタバ行きたい」って 俺はそれを拒否したのよ 恥ずかしい話...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 339 users</span>
+                        <a href="https://anond.hatelabo.jp/20251018225012" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://anond.hatelabo.jp/20251018145000" target="_blank" rel="noopener noreferrer">どこかに性欲のない男っていないの？？？？？？</a></h3>
+                    <p class="summary">恋人は欲しいけどセックスはしたくない こういうこと言うとワガママだとかクズとか言われるのも理解できない むしろ世の中の男の性欲が異常だと思うんだよな 別にセックスしなくたって恋人同士でいるのは楽しいじゃん デートしたり美味しいの一緒に食べたりハグしたりキスしたり そういう行為だけで十分楽しいし幸せじゃ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 252 users</span>
+                        <a href="https://anond.hatelabo.jp/20251018145000" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://blog.lai.so/claude-skills/" target="_blank" rel="noopener noreferrer">Claude Skillsとは何なのか？</a></h3>
+                    <p class="summary">AnthropicがClaudeの新機能 Claude Skills （Agent Skills）を追加したと発表しました。Claude Skillsは、Markdownファイルとスクリプトで構成される「スキルフォルダ」を通じて、モデルに特定の機能や知識を拡張できる仕組みです。 Claude Skills: Customize AI for your workflowsBuild custom S</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 206 users</span>
+                        <a href="https://blog.lai.so/claude-skills/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://2week.net/48240/" target="_blank" rel="noopener noreferrer">スマホカメラは既に構造的限界に到達していると思う【光学8倍望遠】</a></h3>
+                    <p class="summary">あれ？最近スマホカメラ変わって無くない？ いやでもそんなはずはない。メーカーは毎年カメラを刷新してるし1インチも画素数もAIも凄い。スマホカメラは変わっているはず。 と自分を騙し続けてきたけどそろそろ限界。スマホカメラは多分5年位前から変わってない。認める。ということで今回はなぜスマホカメラが変わって...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 192 users</span>
+                        <a href="https://2week.net/48240/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617428" target="_blank" rel="noopener noreferrer">「狂犬病ワクチンを打つお金がない人は、犬を飼ったらいけないって言うんですか！！」医師がこの発言に疑問の声を呈す「フローレス島で起きた事例は犬飼いなら一度は知っておくべきです」</a></h3>
+                    <p class="summary">知念実希人【公式】 @MIKITO_777 ？？？『狂犬病ワクチンを打つお金がない人は、犬を飼ったらいけないって言うんですか！！』 ………そうだが？ x.com/MIKITO_777/sta… 2025-10-18 16:51:43 知念実希人【公式】 @MIKITO_777 インドネシアのフローレス島は1997年まで狂犬病の清浄地域でしたが、 3匹の犬が連れ込まれたことを...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 163 users</span>
+                        <a href="https://togetter.com/li/2617428" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.fnn.jp/articles/-/947456" target="_blank" rel="noopener noreferrer">国民・玉木代表「今後、立憲とは政権構想を共にすることはない」首相指名選挙での野党統一候補の擁立めぐる立憲・維新との協議振り返り“決別宣言”か｜FNNプライムオンライン</a></h3>
+                    <p class="summary">国民・玉木代表「今後、立憲とは政権構想を共にすることはない」首相指名選挙での野党統一候補の擁立めぐる立憲・維新との協議振り返り“決別宣言”か 国民民主党の玉木代表は18日、自身のSNSに投稿し、首相指名選挙での野党統一候補の擁立を目指した立憲民主党との協議を振り返り、「今後、政策ごとの連携はあっても、政...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 157 users</span>
+                        <a href="https://www.fnn.jp/articles/-/947456" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.kobonemi.com/entry/2025/10/18//iPhone-Air-Production" target="_blank" rel="noopener noreferrer">Apple、販売不振でiPhone Airの生産削減の報道 - こぼねみ</a></h3>
+                    <p class="summary">Appleは販売不振からiPhone Airの生産削減を計画していることをMacRumorsが伝えています。 iPhone AirThe Elecがみずほ証券からの情報として伝えているもので、それによると、iPhone 17 ProとiPhone 17 Pro Maxは前年同期比で前モデルを上回る販売実績を示しており、標準モデルのiPhone 17もiPhone 16を大幅に上回る好調...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 155 users</span>
+                        <a href="https://www.kobonemi.com/entry/2025/10/18//iPhone-Air-Production" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617426" target="_blank" rel="noopener noreferrer">田舎に引っ越ししてから町内会費が高すぎて驚いたが、「じゃあ何に使っているんだろう？」と思って行事や町内会の役員会などに参加してみたら、とにかくお金の使い方がおかしかった</a></h3>
+                    <p class="summary">くるり @hibiir0 田舎に引っ越ししてから町内会費が高すぎて驚いたんだけど、じゃあなにに使っているんだろう？って行事や町内会の役員会などに参加してみた。役員会の終わりに「では、呑んで親睦を深めましょう」って瓶ビールがドーーンと出てきたり、夏祭りと称して大量の酒類が出されたり、とにかくお金の使い方が 20...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 137 users</span>
+                        <a href="https://togetter.com/li/2617426" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617516" target="_blank" rel="noopener noreferrer">「グエー死んだンゴ」ニキに敬意を表し、香典として『国立がん研究センター基金』に寄付するニキたちが続々… 成仏してクレメンス</a></h3>
+                    <p class="summary">「グエー死んだンゴ」ニキに敬意を表し、香典として『国立がん研究センター基金』に寄付するニキたちが続々… 成仏してクレメンス</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 124 users</span>
+                        <a href="https://togetter.com/li/2617516" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617338" target="_blank" rel="noopener noreferrer">入り口に小さな部屋が付いているコンビニを見たことがあるか？→「風除室」と呼ばれ、寒い地域だけでなく各地にあるらしい</a></h3>
+                    <p class="summary">リンク Wikipedia 風除室 風除室（ふうじょしつ）は、外気の流入や風の吹きつけを緩和するために建物の入口（玄関）前に設けられた小部屋である。玄関フードとも呼ばれる。 風除室には、屋外側の外扉と屋内側との内扉が二重に設けられているため、片方の扉を開閉しても外気が室内に流入しにくくなっており、冬季の寒気や...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 107 users</span>
+                        <a href="https://togetter.com/li/2617338" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://anond.hatelabo.jp/20251018222857" target="_blank" rel="noopener noreferrer">へ？ 男性二人で水族館無理なの？</a></h3>
+                    <p class="summary">なんで？ クラゲとか魚は別に男らしさとかセクシーさ関係ないよね・・・・ 博物館とかプラネタリウムのような向学心目的の施設に比べると 遊園地みたいなレジャー系よりだとは思う でも遊園地は男二人でいけるんでしょ？ ほへ？ 水族館の性的ニュアンスが分からなくて頭を抱えてる ひょっとして男性固有の文化の問題？ ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 104 users</span>
+                        <a href="https://anond.hatelabo.jp/20251018222857" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.sankei.com/article/20251018-ZZCV7SBQ2NMERPN45VUHDJHDXY/" target="_blank" rel="noopener noreferrer">自民・高市早苗総裁、首相確実に　自・維連立樹立で20日合意へ　維新は入閣せず閣外協力</a></h3>
+                    <p class="summary">自民党と日本維新の会が連立政権樹立で事実上合意したことが18日、分かった。維新は閣僚は出さずに「閣外協力」とする。複数の両党幹部が明らかにした。両党は20日に連立政権合意書に署名する見通しで、21日召集の臨時国会で実施される首相指名選挙で自民・高市早苗総裁の選出が確実な情勢となった。 遠藤敬氏、首相補佐...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 91 users</span>
+                        <a href="https://www.sankei.com/article/20251018-ZZCV7SBQ2NMERPN45VUHDJHDXY/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.afpbb.com/articles/-/3604080" target="_blank" rel="noopener noreferrer">欧州最強軍目指すドイツ、「徴兵くじ引き制」を検討 連立政権内で論争</a></h3>
+                    <p class="summary">【10月18日 AFP】ドイツは敵対的なロシアへの抑止力として新兵募集に力を入れようとしているが、「徴兵くじ引き制」案は連立政権内で論争を巻き起こし、多くの若者を動揺させている。 徴兵制の復活という喫緊の課題は、フリードリヒ・メルツ首相率いる保守「キリスト教民主・社会同盟（CDU・CSU）」と、ボリス・ピストリ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 85 users</span>
+                        <a href="https://www.afpbb.com/articles/-/3604080" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://note.com/hokusyu/n/ne798de16f2c4" target="_blank" rel="noopener noreferrer">比例復活制度はよくできたシステムであるという話｜藤崎剛人</a></h3>
+                    <p class="summary">混迷する日本政局の中で、自民党との連立を模索する維新の党が、連立政権の必要条件として出してきた議員定数削減（比例議席50減）が話題になっています。これは自民党が絶対にのめない企業団体献金の禁止の代替として持ち出されたものだと言われています。さらに議員定数削減は、大した経費の節約にはならず、人民の代...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 78 users</span>
+                        <a href="https://note.com/hokusyu/n/ne798de16f2c4" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.nogizaka46.com/s/n46/news/detail/101428" target="_blank" rel="noopener noreferrer">YouTubeチャンネル「乃木坂配信中」に関するお詫び</a></h3>
+                    <p class="summary">乃木坂46の公式YouTubeチャンネル「乃木坂配信中」におきまして、2025年9月19日に公開いたしました「【マリオパーティ】同期4人でマリパ遊んでみた！【乃木坂ゲーム実況】【Nintendo Switch 2】」の動画において、公開作業時のスタッフの操作のミスにより、Content ID（YouTubeの自動コンテンツ識別システム）が有効とな...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 78 users</span>
+                        <a href="https://www.nogizaka46.com/s/n46/news/detail/101428" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617459" target="_blank" rel="noopener noreferrer">最近のアニメは実線が細すぎるし、線を薄い色にしたり画面全体に撮影処理を掛けるから、背景との差が無くなってキャラの重量感も無くなってしまう</a></h3>
+                    <p class="summary">小谷杏子 @koni_ko222 最近のアニメは実線が細すぎるよ…。 そのうえで線そのものを茶色っぽい薄い色にしたり髪の毛のグラデーションとか画面全体に撮影処理を掛けるから、背景との差が無くなってキャラの重量感も無くなってしまう。 もっと実線太くしてキャラの存在感を出す方向に戻して欲しい。ていうか戻したい 2025-1...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 74 users</span>
+                        <a href="https://togetter.com/li/2617459" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.tokyo-np.co.jp/article/439108" target="_blank" rel="noopener noreferrer">太陽光発電とヒツジ放牧は「完璧な組み合わせ」　アメリカで急成長、一石三鳥の「ソーラーグレージング」って？：東京新聞デジタル</a></h3>
+                    <p class="summary">太陽光発電施設にヒツジを放牧する「ソーラーグレージング」が今、米国で拡大している。太陽光発電の天敵は、日光を遮る草。ヒツジは除草に一役買い、ラム肉としても出荷できて単独の太陽光発電より利益を上げやすく、土壌を肥沃（ひよく）にする効果も期待できる。「一石三鳥」で、不安材料がありつつも成長は続きそう...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 70 users</span>
+                        <a href="https://www.tokyo-np.co.jp/article/439108" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://forbesjapan.com/articles/detail/83414" target="_blank" rel="noopener noreferrer">Windows 11は忘れよう──グーグルの無料OS「ChromeOS Flex」で古いPCを活用 | Forbes JAPAN 公式サイト（フォーブス ジャパン）</a></h3>
+                    <p class="summary">さあ時間切れだ。Windows 10のサポートは終了した。PCをアップグレードしていない、または延長サポートに加入していない場合、この先PCはリスクにさらされるとマイクロソフトは警告している。しかし、アップデートできない2億台のPCの所有者に対し、グーグルは別の選択肢を示している——安全性に欠け、サポート対象外とな...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 69 users</span>
+                        <a href="https://forbesjapan.com/articles/detail/83414" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://zenn.dev/aishift/articles/d1a0551a444317" target="_blank" rel="noopener noreferrer">マウス不要！Git 操作を爆速化する「lazygit」が手放せない</a></h3>
+                    <p class="summary">こんにちは！株式会社AI Shift で Web フロントエンドエンジニアをしている辰川です！ 今回は、筆者が愛用している Git の TUI ツールである lazygit について紹介します。 Git 操作、こんなことで困っていませんか？ git add して git commit して git push ...。 日々の開発で繰り返す、この一連の Git 操作。 ターミ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 51 users</span>
+                        <a href="https://zenn.dev/aishift/articles/d1a0551a444317" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.yomiuri.co.jp/national/20251018-OYT1T50169/" target="_blank" rel="noopener noreferrer">陥没事故で工事中断の外環道トンネル、目標の「３１年完工」は困難…不信感持つ住民との交渉進まず</a></h3>
+                    <p class="summary">【読売新聞】　２０２０年１０月に東京都調布市で起きた陥没事故の影響で中断している東京外郭環状道路（外環道）の東京区間のトンネル工事について、目標の「３１年３月」までに完了できない見通しであることが関係者への取材でわかった。事業主体の</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 45 users</span>
+                        <a href="https://www.yomiuri.co.jp/national/20251018-OYT1T50169/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://news.yahoo.co.jp/articles/de2e8bfad3b2263286e9c32fb39e85a38b184dd6" target="_blank" rel="noopener noreferrer">【高市自民】吉村代表、突然自民と連立交渉の原因は→煮え切らない玉木代表　ＴＶで裏側、公明と一緒に離れたと「なんで勝負しない？」　まだ間に合う「後で寄ってきてもムリ！」と通告（デイリースポーツ） - Yahoo!ニュース</a></h3>
+                    <p class="summary"></p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 42 users</span>
+                        <a href="https://news.yahoo.co.jp/articles/de2e8bfad3b2263286e9c32fb39e85a38b184dd6" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://speakerdeck.com/player/cd4536704070441ebe1c7a48d64ad0c0" target="_blank" rel="noopener noreferrer">Claude Code Subagents 再入門 ~cc-sddの実装で学んだこと~ - Speaker Deck</a></h3>
+                    <p class="summary">自己紹介 Gota (@gota_bara) 所属 データアナリスト &amp; エージェントエンジニア やってること ⼩売向けデータプロダクト / AIエージェント開発 / データ整備 興味 AI × 体験 / ⾳声AI / DSPy / 🏕(夏以外) / アニメ 仕様駆動開発ツール「cc-sdd」 1.5kも⾒えてきた！ 2 ● Brownﬁeld開発に対応するた めのcommandsを⽤意 仕...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 39 users</span>
+                        <a href="https://speakerdeck.com/player/cd4536704070441ebe1c7a48d64ad0c0" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617477" target="_blank" rel="noopener noreferrer">四国の素晴らしさを４枚の地図で表してみる「しょうゆ豆、四国外の人にウケが悪い」「骨付鶏は丸亀市の名物」</a></h3>
+                    <p class="summary">R774@まとめ屋 @kendou774 この4枚の画像以上に四国の素晴らしいところは、他所から来た人にも分け隔てなく接してくださる点です。その根底には、お遍路文化が息づいているのだと思います。私のような余所者が訪れても、皆さんは大変親切にしてくださいました。四国の皆様、本当にありがとうございます。 2025-10-16 20:...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 38 users</span>
+                        <a href="https://togetter.com/li/2617477" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://note.com/cccp1917/n/n31d01343c6ae" target="_blank" rel="noopener noreferrer">ライラックのPV見て泣いてしまった話｜ユーリィ・イズムィコ</a></h3>
+                    <p class="summary">夜中まで原稿書いて若干正気を失ったときとかに一人カラオケに行くんですよね。 思う存分声出すもよし、歌えない曲が歌えるように練習するもよしで。 それでMrs. Green Appleのライラック歌えるようになりたいなと思って予約入れてみたら本人PVのやつでですね。それ見ながら歌っていたら、なんか泣いてしまったんだよな...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 28 users</span>
+                        <a href="https://note.com/cccp1917/n/n31d01343c6ae" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://togetter.com/li/2617519" target="_blank" rel="noopener noreferrer">ちいかわ最新話、自転車編の嫌な予感が最悪な形で的中→『友達が普通に出来ること』が出来ない時の辛さの解像度が高すぎてトラウマが刺激される</a></h3>
+                    <p class="summary">ちいかわ最新話、自転車編の嫌な予感が最悪な形で的中→『友達が普通に出来ること』が出来ない時の辛さの解像度が高すぎてトラウマが刺激される</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 19 users</span>
+                        <a href="https://togetter.com/li/2617519" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.cnn.co.jp/fringe/35239372.html" target="_blank" rel="noopener noreferrer">「日本式」インターバルウォーキング、手軽に健康になれる方法と米専門家も太鼓判</a></h3>
+                    <p class="summary">２００７年の研究によると、屋外を歩くことで高齢者の高血圧を予防できる可能性があることが分かった。不安の軽減や自然とのつながれる効果もある/gbh007/iStockphoto/Getty Images via CNN Newsource （ＣＮＮ） ＳＮＳで話題の最新フィットネストレンドの一つ「日本式ウォーキング」。３０分間、普通のペースでのウォ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17 users</span>
+                        <a href="https://www.cnn.co.jp/fringe/35239372.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.nikkei.com/article/DGXZQOGM08BVO0Y5A001C2000000/" target="_blank" rel="noopener noreferrer">中国、旧日本軍「731部隊」描いた映画急失速 - 日本経済新聞</a></h3>
+                    <p class="summary">【大連=藤村広平】旧日本軍の関東軍防疫給水部（731部隊）を題材にした中国映画「731」が急失速している。興行収入に公開直後の勢いはなく、低空飛行が続く。映画作品としての出来が悪すぎるとの指摘が出ている。731部隊は戦時中、旧満州（現中国東北部）の黒竜江省ハルビンを拠点に細菌兵器を開発したとされる。現地の...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17 users</span>
+                        <a href="https://www.nikkei.com/article/DGXZQOGM08BVO0Y5A001C2000000/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.nikkei.com/article/DGXZQOUA180O80Y5A011C2000000/" target="_blank" rel="noopener noreferrer">日本維新の会「閣内リスク」警戒　閣僚出せば国会で矢面、与党経験者乏しく - 日本経済新聞</a></h3>
+                    <p class="summary">日本維新の会で自民党と政権を発足させても閣僚を出さない「閣外協力論」が強まる背景には、与党入りに伴うリスクを避ける狙いも透ける。維新は国政与党を経験した議員が少ない。政府の役職に就くことによる国会対応への懸念がある。自民党の高市早苗総裁は自身の新内閣の発足後、維新に閣僚ポストを用意する「閣内協力...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 17 users</span>
+                        <a href="https://www.nikkei.com/article/DGXZQOUA180O80Y5A011C2000000/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.nikkei.com/article/DGXZQOUF16AG80W5A011C2000000/" target="_blank" rel="noopener noreferrer">奈良県立医科大学など、ALS原因抑制の因子発見　治療法開発に期待 - 日本経済新聞</a></h3>
+                    <p class="summary">国指定の難病で、体が徐々に動かせなくなるALS（筋萎縮性側索硬化症）の進行や発症を巡り、原因とみられる物質の増加を抑える因子を発見したと、奈良県立医大（同県橿原市）などのチームが16日、英科学誌に発表した。ALSなどの神経変性疾患の解明や治療法開発につながると期待される。ALSは筋肉の運動に関する神経細胞が...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 14 users</span>
+                        <a href="https://www.nikkei.com/article/DGXZQOUF16AG80W5A011C2000000/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://www.47news.jp/13313467.html" target="_blank" rel="noopener noreferrer">ショパンコンクール主催団体トップ「感情を表現することが一番大事」　各国で予備審査も検討、回数制限も示唆【クレッシェンド！】</a></h3>
+                    <p class="summary">ショパン国際ピアノ・コンクールを主催するポーランドの国立フレデリック・ショパン研究所のアルトゥル・シュクレネル所長が１７日、共同通信社などの取材に応じ、選考方法の課題や動画配信の手応え、「ショパンらしさ」とは何かについて語った。（取材・文　共同通信＝田北明大） ―コンクールのライブ配信は多くの人が...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 11 users</span>
+                        <a href="https://www.47news.jp/13313467.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://zenn.dev/uhyo/articles/timestamp-refetch-pattern-ai" target="_blank" rel="noopener noreferrer">Reactのデータ再取得、タイムスタンプで管理すると宣言的になる話【AI生成】</a></h3>
+                    <p class="summary">この記事は、AIが生成した記事を無修正で公開しています。投稿者（人間）の普段の作風・意見と異なる点や内容の粗もありますが、技術記事として公開するに足るクオリティであるという投稿者の判断と責任により投稿するものです。 ただし、記事に含まれる、経験に基づくエピソードは全てAIによる創造である点はご了承くだ...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 11 users</span>
+                        <a href="https://zenn.dev/uhyo/articles/timestamp-refetch-pattern-ai" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://news.yahoo.co.jp/articles/8f3994e2025de891dbf7d8225ac836daf179ec5e" target="_blank" rel="noopener noreferrer">【高市自民】維新に騙された不満の玉木代表→ＴＶで女性解説委員の指摘にフリーズ絶句…「その時、維新と自民に気付きませんでした？」　偶然会って写真撮った維新人物が→まさか高市氏と極秘協議中だったか（デイリースポーツ） - Yahoo!ニュース</a></h3>
+                    <p class="summary"></p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 10 users</span>
+                        <a href="https://news.yahoo.co.jp/articles/8f3994e2025de891dbf7d8225ac836daf179ec5e" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://note.com/gardenarchive/n/na90fab9410bd" target="_blank" rel="noopener noreferrer">【メイキング漫画】 YESTERDAY 〜プロローグ〜｜Garden archive</a></h3>
+                    <p class="summary">9月に発売された写真集『YESTERDAY』の14年におよぶ、制作過程を描いたメイキング漫画をお届けします この機会に是非、本写真集もご覧くださいね。 ホント、初めてこの庭に呼ばれた際、都会のど真ん中に驚き、ビルと樹木のコントラストが印象的でした 続きはこちら↓↓↓ YESTERDAY 〜石塔の価値〜 第1話</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 7 users</span>
+                        <a href="https://note.com/gardenarchive/n/na90fab9410bd" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hatena">はてブ</span>
+                    <h3><a href="https://m-dojo.hatenadiary.com/entry/2025/10/19/030121" target="_blank" rel="noopener noreferrer">【再掲載】「お前は朝鮮総連と喧嘩する気か！」〜大新聞の社会部長も震える、そんな「タブー」ゆえに拉致事件も長引いたと思うよ - INVISIBLE Dojo.　ーQUIET &amp; COLORFUL PLACE-</a></h3>
+                    <p class="summary">NHKスペシャル「未解決事件」北朝鮮 拉致事件が放送されましたね m-dojo.hatenadiary.com 25日まで配信。 File.02(ドラマ) 北朝鮮 拉致事件 配信中 初回放送日NHK総合テレビジョン10月18日(土)午後7:30 配信期限10月25日(土)午後8:53 「拉致事件の解決を阻むものはなにか？」北朝鮮拉致事件の捜査の裏側をドラマ化。長年...</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 6 users</span>
+                        <a href="https://m-dojo.hatenadiary.com/entry/2025/10/19/030121" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="category-2" class="category-section">
+            <h2>🔶 Hacker News</h2>
+            <div class="article-grid">
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://github.com/BurntSushi/ripgrep/releases/tag/15.0.0" target="_blank" rel="noopener noreferrer">Ripgrep 15.0</a></h3>
+                    <p class="summary">Ripgrep 15.0</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 348 points</span>
+                        <a href="https://github.com/BurntSushi/ripgrep/releases/tag/15.0.0" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://dotslashwatch.com/" target="_blank" rel="noopener noreferrer">./watch</a></h3>
+                    <p class="summary">./watch</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 300 points</span>
+                        <a href="https://dotslashwatch.com/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://images.wur.nl/digital/collection/coll13/search" target="_blank" rel="noopener noreferrer">Root System Drawings</a></h3>
+                    <p class="summary">Root System Drawings</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 269 points</span>
+                        <a href="https://images.wur.nl/digital/collection/coll13/search" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://mynoise.net/NoiseMachines/neuromodulationTonesGenerator.php" target="_blank" rel="noopener noreferrer">Tinnitus Neuromodulator</a></h3>
+                    <p class="summary">Tinnitus Neuromodulator</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 232 points</span>
+                        <a href="https://mynoise.net/NoiseMachines/neuromodulationTonesGenerator.php" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://datamethods.substack.com/p/sql-anti-patterns-you-should-avoid" target="_blank" rel="noopener noreferrer">SQL Anti-Patterns</a></h3>
+                    <p class="summary">SQL Anti-Patterns</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 210 points</span>
+                        <a href="https://datamethods.substack.com/p/sql-anti-patterns-you-should-avoid" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://chipsandcheese.com/p/amds-chiplet-apu-an-overview-of-strix" target="_blank" rel="noopener noreferrer">AMD&#x27;s Chiplet APU: An Overview of Strix Halo</a></h3>
+                    <p class="summary">AMD&#x27;s Chiplet APU: An Overview of Strix Halo</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 165 points</span>
+                        <a href="https://chipsandcheese.com/p/amds-chiplet-apu-an-overview-of-strix" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.tomshardware.com/pc-components/microsd-cards/tragic-oceangate-titan-submersibles-usd62-sandisk-memory-card-found-undamaged-at-wreckage-site-12-stills-and-nine-videos-have-been-recovered-but-none-from-the-fateful-implosion" target="_blank" rel="noopener noreferrer">Titan submersible’s $62 SanDisk memory card found undamaged at wreckage site</a></h3>
+                    <p class="summary">Titan submersible’s $62 SanDisk memory card found undamaged at wreckage site</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 158 points</span>
+                        <a href="https://www.tomshardware.com/pc-components/microsd-cards/tragic-oceangate-titan-submersibles-usd62-sandisk-memory-card-found-undamaged-at-wreckage-site-12-stills-and-nine-videos-have-been-recovered-but-none-from-the-fateful-implosion" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://github.com/willcrichton/flowistry" target="_blank" rel="noopener noreferrer">Flowistry: An IDE plugin for Rust that focuses on relevant code</a></h3>
+                    <p class="summary">Flowistry: An IDE plugin for Rust that focuses on relevant code</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 154 points</span>
+                        <a href="https://github.com/willcrichton/flowistry" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://devblogs.microsoft.com/oldnewthing/20251014-00/?p=111681" target="_blank" rel="noopener noreferrer">When you opened a screen shot of a video in Paint, the video was playing in it</a></h3>
+                    <p class="summary">When you opened a screen shot of a video in Paint, the video was playing in it</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 140 points</span>
+                        <a href="https://devblogs.microsoft.com/oldnewthing/20251014-00/?p=111681" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://blog.pkh.me/p/46-fast-calculation-of-the-distance-to-cubic-bezier-curves-on-the-gpu.html" target="_blank" rel="noopener noreferrer">Fast calculation of the distance to cubic Bezier curves on the GPU</a></h3>
+                    <p class="summary">Fast calculation of the distance to cubic Bezier curves on the GPU</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 119 points</span>
+                        <a href="https://blog.pkh.me/p/46-fast-calculation-of-the-distance-to-cubic-bezier-curves-on-the-gpu.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.chinadaily.com.cn/a/202510/18/WS68f3170ea310f735438b5bf2.html" target="_blank" rel="noopener noreferrer">Chen-Ning Yang, Nobel laureate, dies at 103</a></h3>
+                    <p class="summary">Chen-Ning Yang, Nobel laureate, dies at 103</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 109 points</span>
+                        <a href="https://www.chinadaily.com.cn/a/202510/18/WS68f3170ea310f735438b5bf2.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.nytimes.com/2025/10/16/science/kryptos-cia-solution-sanborn-auction.html" target="_blank" rel="noopener noreferrer">Solution to CIA’s Kryptos sculpture is found in Smithsonian vault</a></h3>
+                    <p class="summary">Solution to CIA’s Kryptos sculpture is found in Smithsonian vault</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 108 points</span>
+                        <a href="https://www.nytimes.com/2025/10/16/science/kryptos-cia-solution-sanborn-auction.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.crunchydata.com/blog/is-postgres-read-heavy-or-write-heavy-and-why-should-you-care" target="_blank" rel="noopener noreferrer">Is Postgres read heavy or write heavy?</a></h3>
+                    <p class="summary">Is Postgres read heavy or write heavy?</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 100 points</span>
+                        <a href="https://www.crunchydata.com/blog/is-postgres-read-heavy-or-write-heavy-and-why-should-you-care" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://bchess.github.io/k8s-1m/" target="_blank" rel="noopener noreferrer">K8s with 1M nodes</a></h3>
+                    <p class="summary">K8s with 1M nodes</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 99 points</span>
+                        <a href="https://bchess.github.io/k8s-1m/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://maxlangenkamp.substack.com/p/how-to-sequence-your-dna-for-2k" target="_blank" rel="noopener noreferrer">How to sequence your DNA for &lt;$2k</a></h3>
+                    <p class="summary">How to sequence your DNA for &lt;$2k</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 94 points</span>
+                        <a href="https://maxlangenkamp.substack.com/p/how-to-sequence-your-dna-for-2k" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://research.google/blog/coral-npu-a-full-stack-platform-for-edge-ai/" target="_blank" rel="noopener noreferrer">Coral NPU: A full-stack platform for Edge AI</a></h3>
+                    <p class="summary">Coral NPU: A full-stack platform for Edge AI</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 94 points</span>
+                        <a href="https://research.google/blog/coral-npu-a-full-stack-platform-for-edge-ai/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://werd.io/why-the-open-social-web-matters-now/" target="_blank" rel="noopener noreferrer">Why the open social web matters now</a></h3>
+                    <p class="summary">Why the open social web matters now</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 90 points</span>
+                        <a href="https://werd.io/why-the-open-social-web-matters-now/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.nationalarchives.gov.uk/explore-the-collection/the-collection-blog/secret-diplomatic-message-deciphered-after-350-years/" target="_blank" rel="noopener noreferrer">Secret diplomatic message deciphered after 350 years</a></h3>
+                    <p class="summary">Secret diplomatic message deciphered after 350 years</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 86 points</span>
+                        <a href="https://www.nationalarchives.gov.uk/explore-the-collection/the-collection-blog/secret-diplomatic-message-deciphered-after-350-years/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://unplannedobsolescence.com/blog/what-dynamic-typing-is-for/" target="_blank" rel="noopener noreferrer">What Dynamic Typing Is For</a></h3>
+                    <p class="summary">What Dynamic Typing Is For</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 76 points</span>
+                        <a href="https://unplannedobsolescence.com/blog/what-dynamic-typing-is-for/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://people.idsia.ch/~juergen/who-invented-residual-neural-networks.html" target="_blank" rel="noopener noreferrer">Who invented deep residual learning?</a></h3>
+                    <p class="summary">Who invented deep residual learning?</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 70 points</span>
+                        <a href="https://people.idsia.ch/~juergen/who-invented-residual-neural-networks.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://github.com/lumen-oss/lux" target="_blank" rel="noopener noreferrer">Lux: A luxurious package manager for Lua</a></h3>
+                    <p class="summary">Lux: A luxurious package manager for Lua</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 67 points</span>
+                        <a href="https://github.com/lumen-oss/lux" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.WellObserve.com/OurPaint/index_en.html" target="_blank" rel="noopener noreferrer">Our Paint – A featureless but programmable painting program</a></h3>
+                    <p class="summary">Our Paint – A featureless but programmable painting program</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 49 points</span>
+                        <a href="https://www.WellObserve.com/OurPaint/index_en.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://mathenchant.wordpress.com/2025/10/18/picturing-mathematics/" target="_blank" rel="noopener noreferrer">Picturing Mathematics</a></h3>
+                    <p class="summary">Picturing Mathematics</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 45 points</span>
+                        <a href="https://mathenchant.wordpress.com/2025/10/18/picturing-mathematics/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://gcc.gnu.org/legacy-ml/gcc/2000-01/msg00572.html" target="_blank" rel="noopener noreferrer">The reason GCC is not a library (2000)</a></h3>
+                    <p class="summary">The reason GCC is not a library (2000)</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 36 points</span>
+                        <a href="https://gcc.gnu.org/legacy-ml/gcc/2000-01/msg00572.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://www.psu.edu/news/bellisario-college-communications/story/most-users-cannot-identify-ai-bias-even-training-data" target="_blank" rel="noopener noreferrer">Most users cannot identify AI bias, even in training data</a></h3>
+                    <p class="summary">Most users cannot identify AI bias, even in training data</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 32 points</span>
+                        <a href="https://www.psu.edu/news/bellisario-college-communications/story/most-users-cannot-identify-ai-bias-even-training-data" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://aran.dev/posts/cue/using-cue-to-unify-iot-sensor-data/" target="_blank" rel="noopener noreferrer">Using CUE to unify IoT sensor data</a></h3>
+                    <p class="summary">Using CUE to unify IoT sensor data</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 31 points</span>
+                        <a href="https://aran.dev/posts/cue/using-cue-to-unify-iot-sensor-data/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://avohq.io/blog/breadcrumbs-rails" target="_blank" rel="noopener noreferrer">Adding Breadcrumbs to a Rails Application</a></h3>
+                    <p class="summary">Adding Breadcrumbs to a Rails Application</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 27 points</span>
+                        <a href="https://avohq.io/blog/breadcrumbs-rails" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://basic-code.bearblog.dev/moonlander/" target="_blank" rel="noopener noreferrer">Moonlander.BAS</a></h3>
+                    <p class="summary">Moonlander.BAS</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 27 points</span>
+                        <a href="https://basic-code.bearblog.dev/moonlander/" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+                
+                <article class="article-card">
+                    <span class="source-badge hackernews">Hacker News</span>
+                    <h3><a href="https://phys.org/news/2025-10-satellite-images-reveal-ancient-south.html" target="_blank" rel="noopener noreferrer">Satellite images show ancient hunting traps used by South American social groups</a></h3>
+                    <p class="summary">Satellite images show ancient hunting traps used by South American social groups</p>
+                    <div class="card-meta">
+                        <span class="score">⭐ 14 points</span>
+                        <a href="https://phys.org/news/2025-10-satellite-images-reveal-ancient-south.html" class="read-more" target="_blank" rel="noopener noreferrer">続きを読む →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>📊 合計 104 件の記事</p>
+        <p>ソース: はてなブックマーク, Hacker News, Reddit</p>
+        <p>AI要約: Claude Haiku 4.5 (Anthropic) | <a href="archive.html">📚 アーカイブを見る</a></p>
+        <p class="disclaimer">このダイジェストはAIによって自動生成されています。</p>
+    </footer>
+
+        <script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        }
+
+        // Load dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 170; // Account for sticky header
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.article-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
