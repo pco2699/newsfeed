@@ -16,7 +16,7 @@ sources:
 
 ai:
   provider: anthropic
-  model: claude-haiku-4-20250110  # Cost-optimized model
+  model: claude-haiku-4-5-20251001  # Cost-optimized model
   max_tokens: 4000
   temperature: 0.3
   summary_language: japanese

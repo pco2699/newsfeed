@@ -1,10 +1,10 @@
 """
 Hatena Bookmark fetcher
-Fetches popular and new entries from Hatena Bookmark
+Fetches popular and new entries from Hatena Bookmark using RSS feeds
 """
 
 import requests
-from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
 from typing import List, Dict, Optional
 import logging
 import time
@@ -13,10 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 class HatenaFetcher:
-    """Fetches articles from Hatena Bookmark"""
+    """Fetches articles from Hatena Bookmark via RSS feeds"""
 
-    POPULAR_URL = "https://b.hatena.ne.jp/hotentry/all"
-    NEW_URL = "https://b.hatena.ne.jp/entrylist/all"
+    POPULAR_RSS_URL = "https://b.hatena.ne.jp/hotentry.rss"
+    NEW_RSS_URL = "https://b.hatena.ne.jp/entrylist.rss"
+
+    # XML namespaces used in Hatena RSS
+    NAMESPACES = {
+        'rss': 'http://purl.org/rss/1.0/',
+        'dc': 'http://purl.org/dc/elements/1.1/',
+        'hatena': 'http://www.hatena.ne.jp/info/xmlns#'
+    }
 
     def __init__(self, popular_count: int = 25, new_count: int = 15):
         """
@@ -35,101 +42,115 @@ class HatenaFetcher:
 
     def fetch_popular(self) -> List[Dict[str, any]]:
         """
-        Fetch popular entries from Hatena Bookmark
+        Fetch popular entries from Hatena Bookmark RSS
 
         Returns:
             List of article dictionaries with title, url, bookmarks, etc.
         """
-        logger.info(f"Fetching {self.popular_count} popular entries from Hatena...")
+        logger.info(f"Fetching {self.popular_count} popular entries from Hatena RSS...")
         try:
-            response = self.session.get(self.POPULAR_URL, timeout=10)
+            response = self.session.get(self.POPULAR_RSS_URL, timeout=10)
             response.raise_for_status()
-            return self._parse_entries(response.text, limit=self.popular_count)
+            return self._parse_rss(response.content, limit=self.popular_count)
         except Exception as e:
-            logger.error(f"Error fetching Hatena popular entries: {e}")
+            logger.error(f"Error fetching Hatena popular RSS: {e}")
             return []
 
     def fetch_new(self) -> List[Dict[str, any]]:
         """
-        Fetch new entries from Hatena Bookmark
+        Fetch new entries from Hatena Bookmark RSS
 
         Returns:
             List of article dictionaries with title, url, bookmarks, etc.
         """
-        logger.info(f"Fetching {self.new_count} new entries from Hatena...")
+        logger.info(f"Fetching {self.new_count} new entries from Hatena RSS...")
         try:
-            response = self.session.get(self.NEW_URL, timeout=10)
+            response = self.session.get(self.NEW_RSS_URL, timeout=10)
             response.raise_for_status()
-            return self._parse_entries(response.text, limit=self.new_count)
+            return self._parse_rss(response.content, limit=self.new_count)
         except Exception as e:
-            logger.error(f"Error fetching Hatena new entries: {e}")
+            logger.error(f"Error fetching Hatena new RSS: {e}")
             return []
 
-    def _parse_entries(self, html: str, limit: int) -> List[Dict[str, any]]:
+    def _parse_rss(self, xml_content: bytes, limit: int) -> List[Dict[str, any]]:
         """
-        Parse HTML and extract article information
+        Parse RSS XML and extract article information
 
         Args:
-            html: HTML content
+            xml_content: RSS XML content
             limit: Maximum number of entries to return
 
         Returns:
             List of parsed article dictionaries
         """
-        soup = BeautifulSoup(html, 'lxml')
-        entries = []
+        try:
+            root = ET.fromstring(xml_content)
+            entries = []
 
-        # Find all article entries
-        articles = soup.find_all('article', class_='entrylist-contents', limit=limit)
+            # Find all items in the RSS feed
+            items = root.findall('.//rss:item', self.NAMESPACES)
 
-        for article in articles:
-            try:
-                entry = self._parse_article(article)
-                if entry:
-                    entries.append(entry)
-            except Exception as e:
-                logger.warning(f"Error parsing Hatena article: {e}")
-                continue
+            for item in items[:limit]:
+                try:
+                    entry = self._parse_rss_item(item)
+                    if entry:
+                        entries.append(entry)
+                except Exception as e:
+                    logger.warning(f"Error parsing RSS item: {e}")
+                    continue
 
-        logger.info(f"Successfully parsed {len(entries)} Hatena entries")
-        return entries
+            logger.info(f"Successfully parsed {len(entries)} Hatena entries from RSS")
+            return entries
 
-    def _parse_article(self, article) -> Optional[Dict[str, any]]:
+        except Exception as e:
+            logger.error(f"Error parsing RSS XML: {e}")
+            return []
+
+    def _parse_rss_item(self, item) -> Optional[Dict[str, any]]:
         """
-        Parse individual article element
+        Parse individual RSS item element
 
         Args:
-            article: BeautifulSoup article element
+            item: ElementTree item element
 
         Returns:
             Dictionary with article data or None if parsing fails
         """
         try:
-            # Get title and URL
-            title_elem = article.find('a', class_='js-keyboard-openable')
-            if not title_elem:
-                return None
+            ns = self.NAMESPACES
 
-            title = title_elem.get_text(strip=True)
-            url = title_elem.get('href', '')
+            # Get title (required)
+            title_elem = item.find('rss:title', ns)
+            if title_elem is None or not title_elem.text:
+                return None
+            title = title_elem.text
+
+            # Get URL (required)
+            link_elem = item.find('rss:link', ns)
+            if link_elem is None or not link_elem.text:
+                return None
+            url = link_elem.text
 
             # Get bookmark count
-            bookmark_elem = article.find('span', class_='entrylist-contents-users')
             bookmarks = 0
-            if bookmark_elem:
-                bookmark_text = bookmark_elem.get_text(strip=True)
+            bookmark_elem = item.find('hatena:bookmarkcount', ns)
+            if bookmark_elem is not None and bookmark_elem.text:
                 try:
-                    bookmarks = int(bookmark_text.replace(',', '').replace('users', ''))
+                    bookmarks = int(bookmark_elem.text)
                 except ValueError:
                     bookmarks = 0
 
-            # Get category/tag
-            category_elem = article.find('a', class_='entrylist-contents-category')
-            category = category_elem.get_text(strip=True) if category_elem else ''
+            # Get category (first subject tag)
+            category = ''
+            subject_elem = item.find('dc:subject', ns)
+            if subject_elem is not None and subject_elem.text:
+                category = subject_elem.text
 
-            # Get description if available
-            description_elem = article.find('p', class_='entrylist-contents-description')
-            description = description_elem.get_text(strip=True) if description_elem else ''
+            # Get description
+            description = ''
+            desc_elem = item.find('rss:description', ns)
+            if desc_elem is not None and desc_elem.text:
+                description = desc_elem.text
 
             return {
                 'source': 'はてブ',
@@ -142,7 +163,7 @@ class HatenaFetcher:
             }
 
         except Exception as e:
-            logger.warning(f"Error parsing article element: {e}")
+            logger.warning(f"Error parsing RSS item element: {e}")
             return None
 
     def fetch_all(self) -> List[Dict[str, any]]:

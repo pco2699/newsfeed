@@ -40,8 +40,14 @@ The digest features a **colorful, newspaper-style layout** with:
 git clone https://github.com/your-username/newspaper.git
 cd newspaper
 
-# Install Python dependencies
-pip install -r requirements.txt
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install Python dependencies with uv (much faster than pip!)
+uv pip install -e .
+
+# Alternative: using pip (slower)
+# pip install -r requirements.txt
 ```
 
 ### 2. Get API Keys
@@ -170,7 +176,8 @@ newspaper/
 ├── archive/                       # Archived digests
 ├── main.py                        # Main orchestrator
 ├── config.yaml                    # Configuration
-├── requirements.txt               # Python dependencies
+├── pyproject.toml                 # Python project config & dependencies
+├── requirements.txt               # Legacy dependencies file
 ├── index.html                     # Latest digest (auto-generated)
 ├── archive.html                   # Archive index (auto-generated)
 ├── DESIGN.md                      # Technical specification
