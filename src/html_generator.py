@@ -54,8 +54,11 @@ class HTMLGenerator:
         Returns:
             Complete HTML string
         """
-        highlights = summary_data.get('highlights', [])
-        categories = summary_data.get('categories', [])
+        summary = summary_data.get('summary', '')
+        title = summary_data.get('title', '今日のテックニュースダイジェスト')
+        key_topics = summary_data.get('key_topics', [])
+        article_count = summary_data.get('article_count', 0)
+        sources_used = summary_data.get('sources_used', [])
 
         # Format date in Japanese
         weekday_ja = ['月', '火', '水', '木', '金', '土', '日']
@@ -64,46 +67,54 @@ class HTMLGenerator:
         formatted_date = f"{date_str}（{weekday}）"
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M PST')
 
-        # Calculate estimated reading time
-        total_articles = len(highlights) + sum(len(cat.get('articles', [])) for cat in categories)
-        reading_time = max(5, min(15, total_articles // 6))
+        # Calculate reading time based on character count (Japanese: ~600 chars/min)
+        char_count = len(summary)
+        reading_time = max(2, (char_count // 600) + 1)
+
+        # Convert markdown to HTML (simple conversion for links and formatting)
+        html_summary = self._markdown_to_html(summary)
+
+        # Generate key topics badges
+        topics_html = self._generate_topics_badges(key_topics)
+
+        # Generate sources list
+        sources_html = ', '.join(sources_used) if sources_used else 'Various sources'
 
         html = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>デイリーダイジェスト - {date.strftime('%Y-%m-%d')}</title>
+    <title>{title} - {date.strftime('%Y-%m-%d')}</title>
     {self._get_css()}
 </head>
 <body>
     <header class="colorful-header">
-        <h1>📰 デイリーダイジェスト</h1>
+        <h1>📰 {title}</h1>
         <p class="date">{formatted_date}</p>
         <p class="meta">生成時刻: {timestamp} | 読書時間: 約{reading_time}分</p>
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓 ダークモード</button>
     </header>
 
     <nav class="icon-nav">
-        <a href="#highlights">🔥 ハイライト</a>
-        {self._generate_category_nav(categories)}
+        <a href="#summary">📝 要約</a>
+        <a href="#topics">🏷️ トピック</a>
         <a href="archive.html">📚 アーカイブ</a>
     </nav>
 
     <main>
-        <section id="highlights" class="category-section highlight">
-            <h2>🔥 今日のハイライト</h2>
-            <div class="article-grid">
-                {self._generate_article_cards(highlights, is_highlight=True)}
-            </div>
+        <section id="topics" class="topics-section">
+            {topics_html}
         </section>
 
-        {self._generate_category_sections(categories)}
+        <article id="summary" class="summary-article">
+            {html_summary}
+        </article>
     </main>
 
     <footer>
-        <p>📊 合計 {total_articles} 件の記事</p>
-        <p>ソース: はてなブックマーク, Hacker News, Reddit</p>
+        <p>📊 分析記事数: {article_count}件</p>
+        <p>ソース: {sources_html}</p>
         <p>AI要約: Claude Haiku 4.5 (Anthropic) | <a href="archive.html">📚 アーカイブを見る</a></p>
         <p class="disclaimer">このダイジェストはAIによって自動生成されています。</p>
     </footer>
@@ -113,6 +124,56 @@ class HTMLGenerator:
 </html>"""
 
         return html
+
+    def _markdown_to_html(self, markdown_text: str) -> str:
+        """
+        Convert simple markdown to HTML (links and paragraphs)
+
+        Args:
+            markdown_text: Markdown text
+
+        Returns:
+            HTML string
+        """
+        import re
+
+        # Escape HTML first
+        html_text = html_module.escape(markdown_text)
+
+        # Convert markdown links [text](url) to HTML
+        # We need to unescape the converted links
+        html_text = re.sub(
+            r'\[([^\]]+)\]\(([^\)]+)\)',
+            r'<a href="\2" target="_blank" rel="noopener noreferrer">\1</a>',
+            html_text
+        )
+
+        # Convert double newlines to paragraphs
+        paragraphs = html_text.split('\n\n')
+        paragraphs = [f'<p>{p.strip()}</p>' for p in paragraphs if p.strip()]
+
+        return '\n'.join(paragraphs)
+
+    def _generate_topics_badges(self, topics: List[Dict[str, Any]]) -> str:
+        """
+        Generate HTML for topic badges
+
+        Args:
+            topics: List of topic dictionaries
+
+        Returns:
+            HTML string for topics
+        """
+        if not topics:
+            return '<p class="no-topics">トピックなし</p>'
+
+        badges = []
+        for topic in topics:
+            topic_name = html_module.escape(topic.get('topic', ''))
+            icon = topic.get('icon', '📋')
+            badges.append(f'<span class="topic-badge">{icon} {topic_name}</span>')
+
+        return f'<div class="topics-badges">{"".join(badges)}</div>'
 
     def _generate_category_nav(self, categories: List[Dict[str, Any]]) -> str:
         """Generate navigation links for categories"""
@@ -202,28 +263,27 @@ class HTMLGenerator:
         :root {
             --bg-primary: #ffffff;
             --bg-secondary: #f8f9fa;
-            --bg-card: #ffffff;
+            --bg-article: #ffffff;
             --text-primary: #212529;
             --text-secondary: #6c757d;
+            --text-link: #0d6efd;
+            --text-link-hover: #0a58ca;
             --border-color: #dee2e6;
             --accent-blue: #0d6efd;
-            --accent-green: #198754;
-            --accent-orange: #fd7e14;
             --accent-purple: #6f42c1;
-            --accent-red: #dc3545;
             --shadow: 0 2px 8px rgba(0,0,0,0.1);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);
         }
 
         body.dark-mode {
             --bg-primary: #1a1a1a;
             --bg-secondary: #2d2d2d;
-            --bg-card: #2d2d2d;
+            --bg-article: #252525;
             --text-primary: #e9ecef;
             --text-secondary: #adb5bd;
+            --text-link: #4dabf7;
+            --text-link-hover: #74c0fc;
             --border-color: #495057;
             --shadow: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.4);
         }
 
         * {
@@ -318,14 +378,9 @@ class HTMLGenerator:
         }
 
         main {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1rem;
-        }
-
-        .category-section {
-            margin-bottom: 3rem;
-            animation: fadeIn 0.6s ease-in;
         }
 
         @keyframes fadeIn {
@@ -333,121 +388,70 @@ class HTMLGenerator:
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .category-section h2 {
-            font-size: 1.8rem;
+        .topics-section {
+            margin-bottom: 2rem;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        .topics-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .topic-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .topic-badge:hover {
+            transform: translateY(-2px);
+        }
+
+        .summary-article {
+            background: var(--bg-article);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease-in;
+            line-height: 2;
+            font-size: 1.05rem;
+        }
+
+        .summary-article p {
             margin-bottom: 1.5rem;
             color: var(--text-primary);
-            border-left: 5px solid var(--accent-blue);
-            padding-left: 1rem;
+            text-align: justify;
         }
 
-        .category-section.highlight h2 {
-            border-left-color: var(--accent-red);
+        .summary-article p:last-child {
+            margin-bottom: 0;
         }
 
-        .article-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .article-card {
-            background: var(--bg-card);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .article-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent-blue);
-        }
-
-        .article-card.highlight-card {
-            border-color: var(--accent-orange);
-            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-        }
-
-        .source-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: white;
-            width: fit-content;
-        }
-
-        .source-badge.hatena {
-            background: linear-gradient(135deg, #00a4de 0%, #0086c3 100%);
-        }
-
-        .source-badge.hackernews {
-            background: linear-gradient(135deg, #ff6600 0%, #ff4500 100%);
-        }
-
-        .source-badge.reddit {
-            background: linear-gradient(135deg, #ff4500 0%, #ff3300 100%);
-        }
-
-        .source-badge.other {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        }
-
-        .article-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .article-card h3 a {
-            color: var(--text-primary);
+        .summary-article a {
+            color: var(--text-link);
             text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .article-card h3 a:hover {
-            color: var(--accent-blue);
-        }
-
-        .summary {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            flex-grow: 1;
-        }
-
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .score {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .read-more {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
+            border-bottom: 1px solid var(--text-link);
             transition: all 0.3s;
+            font-weight: 500;
         }
 
-        .read-more:hover {
-            color: var(--accent-purple);
-            transform: translateX(3px);
+        .summary-article a:hover {
+            color: var(--text-link-hover);
+            border-bottom-color: var(--text-link-hover);
+            background: rgba(13, 110, 253, 0.05);
+        }
+
+        body.dark-mode .summary-article a:hover {
+            background: rgba(77, 171, 247, 0.1);
         }
 
         footer {
@@ -483,8 +487,10 @@ class HTMLGenerator:
                 font-size: 1.5rem;
             }
 
-            .article-grid {
-                grid-template-columns: 1fr;
+            .summary-article {
+                padding: 2rem 1.5rem;
+                font-size: 1rem;
+                line-height: 1.8;
             }
 
             .icon-nav {
@@ -495,6 +501,10 @@ class HTMLGenerator:
             .icon-nav a {
                 font-size: 0.8rem;
                 padding: 0.4rem 0.8rem;
+            }
+
+            main {
+                padding: 1rem 0.5rem;
             }
         }
     </style>"""
@@ -530,7 +540,7 @@ class HTMLGenerator:
             });
         });
 
-        // Add animation on scroll
+        // Add fade-in animation on scroll for summary article
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -545,10 +555,11 @@ class HTMLGenerator:
             });
         }, observerOptions);
 
-        document.querySelectorAll('.article-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
-        });
+        const summaryArticle = document.querySelector('.summary-article');
+        if (summaryArticle) {
+            summaryArticle.style.opacity = '0';
+            summaryArticle.style.transform = 'translateY(20px)';
+            summaryArticle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(summaryArticle);
+        }
     </script>"""

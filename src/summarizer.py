@@ -118,56 +118,44 @@ class AISummarizer:
         Returns:
             Complete prompt string
         """
-        return f"""あなたは日本語でニュースダイジェストを作成するAIアシスタントです。以下の{count}件の記事を分析し、トピックごとに分類して、日本語で簡潔に要約してください。
+        return f"""あなたは日本語でニュースダイジェストを作成するAIアシスタントです。以下の{count}件の記事を分析し、今日のテック業界の動向について約1000文字の日本語の要約記事を作成してください。
 
 **重要な指示:**
-1. **カテゴリの自動決定**: 記事の内容に基づいて、適切な日本語のカテゴリ名を自動的に作成してください（例: テクノロジー、AI・機械学習、プログラミング、セキュリティ、ビジネス、サイエンス、など）
-2. **簡潔な要約**: 各記事は1-2文で簡潔に要約してください
-3. **中立的なトーン**: 客観的で情報的なトーンを保ってください
-4. **英語コンテンツの翻訳**: 英語の記事は自然な日本語に翻訳してください
-5. **ソースの明記**: 各記事のソース（はてブ、Hacker News、Reddit）を含めてください
-6. **ハイライト**: 最も重要/人気のある5-10件の記事を「ハイライト」として選んでください
-7. **コメントは含めない**: 記事の内容のみに焦点を当ててください
+1. **文章形式**: 箇条書きではなく、読みやすい段落形式の文章で書いてください
+2. **構成**:
+   - 冒頭に全体的なトレンドや注目点を述べる（2-3段落）
+   - 主要なトピックごとに段落を分けて詳しく解説（5-7段落）
+   - 締めくくりに今日の重要ポイントをまとめる（1-2段落）
+3. **リンクの挿入**: 記事に言及する際は、必ず元記事へのリンクを埋め込んでください
+   - 例: 「[Reactの新機能](https://example.com)が発表され...」
+   - 各段落で関連する記事へのリンクを自然に含めてください
+4. **英語コンテンツの翻訳**: 英語の記事タイトルや内容は自然な日本語に翻訳してください
+5. **中立的なトーン**: 客観的で情報的なトーンを保ち、分析的な視点を加えてください
+6. **トピックの関連付け**: 複数の記事に共通するテーマやトレンドがあれば、それらを関連付けて説明してください
+7. **文字数**: 約1000文字（900-1200文字程度）を目安にしてください
 
 **出力形式:**
 JSON形式で以下の構造で出力してください:
 
 ```json
 {{
-  "highlights": [
+  "summary": "Markdown形式の要約記事（約1000文字、リンク付き）",
+  "title": "今日のダイジェストのタイトル（20文字以内）",
+  "key_topics": [
     {{
-      "title": "日本語のタイトル",
-      "summary": "1-2文の要約",
-      "source": "ソース名",
-      "url": "元のURL",
-      "score": スコア,
-      "score_label": "スコアラベル",
-      "category": "カテゴリ名"
+      "topic": "トピック名",
+      "icon": "適切な絵文字"
     }}
   ],
-  "categories": [
-    {{
-      "name": "カテゴリ名（日本語）",
-      "icon": "適切な絵文字",
-      "articles": [
-        {{
-          "title": "日本語のタイトル",
-          "summary": "1-2文の要約",
-          "source": "ソース名",
-          "url": "元のURL",
-          "score": スコア,
-          "score_label": "スコアラベル"
-        }}
-      ]
-    }}
-  ]
+  "article_count": {count},
+  "sources_used": ["使用したソース名のリスト"]
 }}
 ```
 
 **記事リスト:**
 {article_list}
 
-必ずJSON形式で出力してください。"""
+必ずJSON形式で出力してください。summaryフィールドには、記事へのリンクを含む約1000文字の日本語の要約記事を書いてください。"""
 
     def _parse_summary_response(
         self,
@@ -202,11 +190,22 @@ JSON形式で以下の構造で出力してください:
             # Parse JSON
             result = json.loads(response_text)
 
-            # Validate structure
-            if 'highlights' not in result:
-                result['highlights'] = []
-            if 'categories' not in result:
-                result['categories'] = []
+            # Validate structure for new format
+            if 'summary' not in result:
+                logger.warning("Missing 'summary' field in response")
+                return self._create_fallback_summary(original_articles)
+
+            if 'title' not in result:
+                result['title'] = '今日のテックニュースダイジェスト'
+
+            if 'key_topics' not in result:
+                result['key_topics'] = []
+
+            if 'article_count' not in result:
+                result['article_count'] = len(original_articles)
+
+            if 'sources_used' not in result:
+                result['sources_used'] = list(set(a.get('source', '') for a in original_articles))
 
             return result
 
@@ -230,42 +229,29 @@ JSON形式で以下の構造で出力してください:
         # Sort by score
         sorted_articles = sorted(articles, key=lambda x: x.get('score', 0), reverse=True)
 
-        # Create highlights from top articles
-        highlights = []
-        for article in sorted_articles[:10]:
-            highlights.append({
-                'title': article.get('title', ''),
-                'summary': article.get('description', article.get('title', ''))[:200],
-                'source': article.get('source', ''),
-                'url': article.get('url', ''),
-                'score': article.get('score', 0),
-                'score_label': article.get('score_label', ''),
-                'category': 'その他'
-            })
+        # Create a simple summary with links
+        summary_parts = ["今日のテックニュースをお届けします。\n\n"]
 
-        # Group by source as categories
-        categories = {}
-        for article in sorted_articles:
-            source = article.get('source', 'その他')
-            if source not in categories:
-                categories[source] = {
-                    'name': source,
-                    'icon': self._get_source_icon(source),
-                    'articles': []
-                }
+        for i, article in enumerate(sorted_articles[:15], 1):
+            title = article.get('title', '')
+            url = article.get('url', '')
+            source = article.get('source', '')
+            summary_parts.append(f"{i}. [{title}]({url}) ({source})\n\n")
 
-            categories[source]['articles'].append({
-                'title': article.get('title', ''),
-                'summary': article.get('description', article.get('title', ''))[:200],
-                'source': source,
-                'url': article.get('url', ''),
-                'score': article.get('score', 0),
-                'score_label': article.get('score_label', '')
-            })
+        summary_text = "".join(summary_parts)
+
+        # Get unique sources
+        sources = list(set(a.get('source', '') for a in articles))
 
         return {
-            'highlights': highlights,
-            'categories': list(categories.values())
+            'summary': summary_text,
+            'title': '今日のテックニュースダイジェスト',
+            'key_topics': [
+                {'topic': 'テクノロジー', 'icon': '💻'},
+                {'topic': 'ニュース', 'icon': '📰'}
+            ],
+            'article_count': len(articles),
+            'sources_used': sources
         }
 
     def _get_source_icon(self, source: str) -> str:
