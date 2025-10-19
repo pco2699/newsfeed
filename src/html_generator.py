@@ -54,11 +54,11 @@ class HTMLGenerator:
         Returns:
             Complete HTML string
         """
-        summary = summary_data.get('summary', '')
         title = summary_data.get('title', '今日のテックニュースダイジェスト')
+        overall_summary = summary_data.get('overall_summary', '')
+        source_summaries = summary_data.get('source_summaries', [])
         key_topics = summary_data.get('key_topics', [])
-        article_count = summary_data.get('article_count', 0)
-        sources_used = summary_data.get('sources_used', [])
+        total_articles = summary_data.get('total_articles', 0)
 
         # Format date in Japanese
         weekday_ja = ['月', '火', '水', '木', '金', '土', '日']
@@ -67,18 +67,22 @@ class HTMLGenerator:
         formatted_date = f"{date_str}（{weekday}）"
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M PST')
 
-        # Calculate reading time based on character count (Japanese: ~600 chars/min)
-        char_count = len(summary)
-        reading_time = max(2, (char_count // 600) + 1)
+        # Calculate reading time based on total character count (Japanese: ~600 chars/min)
+        total_chars = len(overall_summary) + sum(len(s.get('summary', '')) for s in source_summaries)
+        reading_time = max(3, (total_chars // 600) + 1)
 
-        # Convert markdown to HTML (simple conversion for links and formatting)
-        html_summary = self._markdown_to_html(summary)
+        # Convert markdown to HTML
+        html_overall_summary = self._markdown_to_html(overall_summary)
 
         # Generate key topics badges
         topics_html = self._generate_topics_badges(key_topics)
 
-        # Generate sources list
-        sources_html = ', '.join(sources_used) if sources_used else 'Various sources'
+        # Generate source sections
+        source_sections_html = self._generate_source_sections(source_summaries)
+
+        # Get list of sources
+        sources_list = [s.get('source', '') for s in source_summaries]
+        sources_html = ', '.join(sources_list) if sources_list else 'Various sources'
 
         html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -97,8 +101,8 @@ class HTMLGenerator:
     </header>
 
     <nav class="icon-nav">
-        <a href="#summary">📝 要約</a>
-        <a href="#topics">🏷️ トピック</a>
+        <a href="#overall">📝 全体サマリー</a>
+        {self._generate_source_nav(source_summaries)}
         <a href="archive.html">📚 アーカイブ</a>
     </nav>
 
@@ -107,13 +111,16 @@ class HTMLGenerator:
             {topics_html}
         </section>
 
-        <article id="summary" class="summary-article">
-            {html_summary}
+        <article id="overall" class="summary-article overall-summary">
+            <h2 class="section-title">📝 今日の全体サマリー</h2>
+            {html_overall_summary}
         </article>
+
+        {source_sections_html}
     </main>
 
     <footer>
-        <p>📊 分析記事数: {article_count}件</p>
+        <p>📊 分析記事数: {total_articles}件</p>
         <p>ソース: {sources_html}</p>
         <p>AI要約: Claude Haiku 4.5 (Anthropic) | <a href="archive.html">📚 アーカイブを見る</a></p>
         <p class="disclaimer">このダイジェストはAIによって自動生成されています。</p>
@@ -174,6 +181,58 @@ class HTMLGenerator:
             badges.append(f'<span class="topic-badge">{icon} {topic_name}</span>')
 
         return f'<div class="topics-badges">{"".join(badges)}</div>'
+
+    def _generate_source_nav(self, source_summaries: List[Dict[str, Any]]) -> str:
+        """
+        Generate navigation links for source sections
+
+        Args:
+            source_summaries: List of source summary dictionaries
+
+        Returns:
+            HTML string for navigation
+        """
+        nav_items = []
+        for source_summary in source_summaries:
+            source = source_summary.get('source', '')
+            icon = source_summary.get('icon', '📰')
+            # Create slug for anchor
+            slug = source.lower().replace(' ', '-')
+            nav_items.append(f'<a href="#{slug}">{icon} {source}</a>')
+
+        return '\n        '.join(nav_items)
+
+    def _generate_source_sections(self, source_summaries: List[Dict[str, Any]]) -> str:
+        """
+        Generate HTML sections for each source
+
+        Args:
+            source_summaries: List of source summary dictionaries
+
+        Returns:
+            HTML string for source sections
+        """
+        sections = []
+
+        for source_summary in source_summaries:
+            source = source_summary.get('source', '')
+            icon = source_summary.get('icon', '📰')
+            summary = source_summary.get('summary', '')
+            article_count = source_summary.get('article_count', 0)
+            slug = source.lower().replace(' ', '-')
+
+            # Convert markdown to HTML
+            html_summary = self._markdown_to_html(summary)
+
+            section = f"""
+        <article id="{slug}" class="summary-article source-summary">
+            <h2 class="section-title">{icon} {source} <span class="article-count">({article_count}件)</span></h2>
+            {html_summary}
+        </article>"""
+
+            sections.append(section)
+
+        return '\n'.join(sections)
 
     def _generate_category_nav(self, categories: List[Dict[str, Any]]) -> str:
         """Generate navigation links for categories"""
@@ -424,6 +483,29 @@ class HTMLGenerator:
             animation: fadeIn 0.8s ease-in;
             line-height: 2;
             font-size: 1.05rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-article.overall-summary {
+            border-left: 4px solid var(--accent-purple);
+        }
+
+        .summary-article.source-summary {
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .article-count {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: normal;
         }
 
         .summary-article p {
@@ -540,7 +622,7 @@ class HTMLGenerator:
             });
         });
 
-        // Add fade-in animation on scroll for summary article
+        // Add fade-in animation on scroll for summary articles
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -555,11 +637,10 @@ class HTMLGenerator:
             });
         }, observerOptions);
 
-        const summaryArticle = document.querySelector('.summary-article');
-        if (summaryArticle) {
-            summaryArticle.style.opacity = '0';
-            summaryArticle.style.transform = 'translateY(20px)';
-            summaryArticle.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-            observer.observe(summaryArticle);
-        }
+        document.querySelectorAll('.summary-article').forEach(article => {
+            article.style.opacity = '0';
+            article.style.transform = 'translateY(20px)';
+            article.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(article);
+        });
     </script>"""

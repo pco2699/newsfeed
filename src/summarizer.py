@@ -118,44 +118,60 @@ class AISummarizer:
         Returns:
             Complete prompt string
         """
-        return f"""あなたは日本語でニュースダイジェストを作成するAIアシスタントです。以下の{count}件の記事を分析し、今日のテック業界の動向について約1000文字の日本語の要約記事を作成してください。
+        return f"""あなたは日本語でニュースダイジェストを作成するAIアシスタントです。以下の{count}件の記事を分析し、ソース別（はてブ、Hacker News、Reddit）に分けて要約記事を作成してください。
 
 **重要な指示:**
-1. **文章形式**: 箇条書きではなく、読みやすい段落形式の文章で書いてください
-2. **構成**:
-   - 冒頭に全体的なトレンドや注目点を述べる（2-3段落）
-   - 主要なトピックごとに段落を分けて詳しく解説（5-7段落）
-   - 締めくくりに今日の重要ポイントをまとめる（1-2段落）
-3. **リンクの挿入**: 記事に言及する際は、必ず元記事へのリンクを埋め込んでください
-   - 例: 「[Reactの新機能](https://example.com)が発表され...」
-   - 各段落で関連する記事へのリンクを自然に含めてください
+1. **ソース別に分割**: はてブ、Hacker News、Redditの3つのセクションに分けて要約を作成してください
+2. **各セクションの構成**:
+   - 各ソースごとに300-500文字程度の段落形式の要約
+   - そのソースの主要なトピックやトレンドを説明
+   - 記事へのリンクを自然に埋め込む（例: 「[記事タイトル](URL)では...」）
+3. **全体サマリー**: 冒頭に全ソースを通しての今日の注目点を2-3段落（200-300文字）で記述
 4. **英語コンテンツの翻訳**: 英語の記事タイトルや内容は自然な日本語に翻訳してください
 5. **中立的なトーン**: 客観的で情報的なトーンを保ち、分析的な視点を加えてください
-6. **トピックの関連付け**: 複数の記事に共通するテーマやトレンドがあれば、それらを関連付けて説明してください
-7. **文字数**: 約1000文字（900-1200文字程度）を目安にしてください
+6. **リンクの挿入**: Markdown形式 `[タイトル](URL)` で必ず記事リンクを含めてください
 
 **出力形式:**
 JSON形式で以下の構造で出力してください:
 
 ```json
 {{
-  "summary": "Markdown形式の要約記事（約1000文字、リンク付き）",
   "title": "今日のダイジェストのタイトル（20文字以内）",
+  "overall_summary": "全体的な今日のトレンドや注目点（200-300文字、Markdown形式）",
+  "source_summaries": [
+    {{
+      "source": "はてブ",
+      "icon": "📑",
+      "summary": "はてブからの記事の要約（300-500文字、リンク付きMarkdown形式）",
+      "article_count": 記事数
+    }},
+    {{
+      "source": "Hacker News",
+      "icon": "🔶",
+      "summary": "Hacker Newsからの記事の要約（300-500文字、リンク付きMarkdown形式）",
+      "article_count": 記事数
+    }},
+    {{
+      "source": "Reddit",
+      "icon": "🤖",
+      "summary": "Redditからの記事の要約（300-500文字、リンク付きMarkdown形式）",
+      "article_count": 記事数
+    }}
+  ],
   "key_topics": [
     {{
       "topic": "トピック名",
       "icon": "適切な絵文字"
     }}
   ],
-  "article_count": {count},
-  "sources_used": ["使用したソース名のリスト"]
+  "total_articles": {count}
 }}
 ```
 
 **記事リスト:**
 {article_list}
 
-必ずJSON形式で出力してください。summaryフィールドには、記事へのリンクを含む約1000文字の日本語の要約記事を書いてください。"""
+必ずJSON形式で出力してください。各ソースのsummaryフィールドには、記事へのリンクを含む段落形式の日本語要約を書いてください。"""
 
     def _parse_summary_response(
         self,
@@ -191,8 +207,8 @@ JSON形式で以下の構造で出力してください:
             result = json.loads(response_text)
 
             # Validate structure for new format
-            if 'summary' not in result:
-                logger.warning("Missing 'summary' field in response")
+            if 'overall_summary' not in result or 'source_summaries' not in result:
+                logger.warning("Missing required fields in response")
                 return self._create_fallback_summary(original_articles)
 
             if 'title' not in result:
@@ -201,11 +217,8 @@ JSON形式で以下の構造で出力してください:
             if 'key_topics' not in result:
                 result['key_topics'] = []
 
-            if 'article_count' not in result:
-                result['article_count'] = len(original_articles)
-
-            if 'sources_used' not in result:
-                result['sources_used'] = list(set(a.get('source', '') for a in original_articles))
+            if 'total_articles' not in result:
+                result['total_articles'] = len(original_articles)
 
             return result
 
@@ -229,29 +242,52 @@ JSON形式で以下の構造で出力してください:
         # Sort by score
         sorted_articles = sorted(articles, key=lambda x: x.get('score', 0), reverse=True)
 
-        # Create a simple summary with links
-        summary_parts = ["今日のテックニュースをお届けします。\n\n"]
+        # Group by source
+        by_source = {}
+        for article in sorted_articles:
+            source = article.get('source', 'その他')
+            if source not in by_source:
+                by_source[source] = []
+            by_source[source].append(article)
 
-        for i, article in enumerate(sorted_articles[:15], 1):
-            title = article.get('title', '')
-            url = article.get('url', '')
-            source = article.get('source', '')
-            summary_parts.append(f"{i}. [{title}]({url}) ({source})\n\n")
+        # Create overall summary
+        overall_summary = f"今日は全体で{len(articles)}件の記事を収集しました。\n\n主なトピックは、テクノロジー、AI、プログラミングなどです。"
 
-        summary_text = "".join(summary_parts)
+        # Create source summaries
+        source_summaries = []
+        source_icons = {
+            'はてブ': '📑',
+            'Hacker News': '🔶',
+            'Reddit': '🤖'
+        }
 
-        # Get unique sources
-        sources = list(set(a.get('source', '') for a in articles))
+        for source, source_articles in by_source.items():
+            summary_parts = []
+            for i, article in enumerate(source_articles[:10], 1):
+                title = article.get('title', '')
+                url = article.get('url', '')
+                summary_parts.append(f"[{title}]({url})")
+                if i < len(source_articles[:10]):
+                    summary_parts.append("、")
+
+            summary_text = f"{source}からは{len(source_articles)}件の記事があります。主な記事: " + "".join(summary_parts)
+
+            source_summaries.append({
+                'source': source,
+                'icon': source_icons.get(source, '📰'),
+                'summary': summary_text,
+                'article_count': len(source_articles)
+            })
 
         return {
-            'summary': summary_text,
             'title': '今日のテックニュースダイジェスト',
+            'overall_summary': overall_summary,
+            'source_summaries': source_summaries,
             'key_topics': [
                 {'topic': 'テクノロジー', 'icon': '💻'},
                 {'topic': 'ニュース', 'icon': '📰'}
             ],
-            'article_count': len(articles),
-            'sources_used': sources
+            'total_articles': len(articles)
         }
 
     def _get_source_icon(self, source: str) -> str:
