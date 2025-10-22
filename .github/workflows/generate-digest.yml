@@ -2,10 +2,10 @@ name: Generate Daily Digest
 
 on:
   schedule:
-    # Run daily at 7:00 AM PST (15:00 UTC during PST, 14:00 UTC during PDT)
-    # GitHub Actions uses UTC, so we set it to 15:00 UTC
-    # Note: During PDT (March-November), this will be 8:00 AM instead of 7:00 AM
-    - cron: '0 15 * * *'
+    # Run daily at 6:00 AM PST (14:00 UTC during PST, 13:00 UTC during PDT)
+    # GitHub Actions uses UTC, so we set it to 14:00 UTC
+    # Note: During PDT (March-November), this will be 7:00 AM instead of 6:00 AM
+    - cron: '0 14 * * *'
 
   workflow_dispatch:  # Allow manual trigger for testing
 
